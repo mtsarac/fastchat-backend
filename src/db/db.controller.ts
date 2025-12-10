@@ -5,6 +5,5 @@ import { DbService } from './db.service';
 export class DbController {
   constructor(private dbService: DbService) {
     // You can use the dbService here
-    dbService.initializeConnection();
   }
 }

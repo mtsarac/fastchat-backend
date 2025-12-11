@@ -99,3 +99,10 @@ export const attachments = pgTable('attachments', {
   // height: integer(),  // image/video height
   // duration: integer() // seconds (audio/video)
 });
+
+export type ConversationType = conType;
+export type UsersType = typeof users.$inferInsert;
+export type ConversationsType = typeof conversations.$inferInsert;
+export type ConversationMembersType = typeof conversation_members.$inferInsert;
+export type MessagesType = typeof messages.$inferInsert;
+export type AttachmentsType = typeof attachments.$inferInsert;

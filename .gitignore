@@ -1,10 +1,14 @@
-# compiled output
+# Dependencies
+node_modules/
+yarn.lock
+package-lock.json
+
+# Compiled output
 /dist
-/node_modules
 /build
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 pnpm-debug.log*
@@ -12,15 +16,20 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# OS
+# OS files
 .DS_Store
-
-# Tests
-/coverage
-/.nyc_output
+Thumbs.db
+*.swp
+*.swo
+*~
 
 # IDEs and editors
-/.idea
+/.idea/
+/.vscode/*
+!/.vscode/settings.json
+!/.vscode/tasks.json
+!/.vscode/launch.json
+!/.vscode/extensions.json
 .project
 .classpath
 .c9/
@@ -28,29 +37,42 @@ lerna-debug.log*
 .settings/
 *.sublime-workspace
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# dotenv environment variable files
+# Environment variables
 .env
+.env.local
+.env.*.local
 .env.development.local
 .env.test.local
 .env.production.local
-.env.local
 
-# temp directory
-.temp
-.tmp
+# Testing
+/coverage
+/.nyc_output
+
+# Temp and cache
+.temp/
+.tmp/
+.cache/
+.eslintcache
+
+# Yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 
 # Runtime data
-pids
+pids/
 *.pid
 *.seed
 *.pid.lock
 
-# Diagnostic reports (https://nodejs.org/api/report.html)
+# Diagnostic reports
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# IDE specific
+.DS_Store
+.AppleDouble
+.LSOverride
+

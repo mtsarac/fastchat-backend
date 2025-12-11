@@ -2,7 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { DbService } from '../db.service';
 import { users } from '../schema';
 import { eq } from 'drizzle-orm';
-import { CreateUserDto, UpdateUserDto } from '../types';
+
+export interface CreateUserInput {
+  username: string;
+  email: string;
+  password_hash: string;
+}
+
+export interface UpdateUserInput {
+  username?: string;
+  email?: string;
+  password_hash?: string;
+  is_active?: boolean;
+}
 
 @Injectable()
 export class UserRepository {
@@ -28,12 +40,12 @@ export class UserRepository {
     return db.select().from(users).where(eq(users.email, email));
   }
 
-  async create(data: CreateUserDto) {
+  async create(data: CreateUserInput) {
     const db = this.dbService.getDb();
     return db.insert(users).values(data).returning();
   }
 
-  async update(id: string, data: UpdateUserDto) {
+  async update(id: string, data: UpdateUserInput) {
     const db = this.dbService.getDb();
     return db
       .update(users)

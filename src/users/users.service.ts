@@ -1,6 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { UserRepository } from '../db/repositories';
-import { CreateUserDto, UpdateUserDto, User } from '../db/types';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
@@ -35,12 +42,35 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const result = await this.userRepository.create(createUserDto);
-    return result[0];
+    try {
+      // Şifreyi hash'le
+      const hashedPassword = await bcrypt.hash(createUserDto.password_hash, 10);
+
+      const createUserWithHashedPassword = {
+        ...createUserDto,
+        password_hash: hashedPassword,
+      };
+
+      const result = await this.userRepository.create(
+        createUserWithHashedPassword,
+      );
+      return result[0];
+    } catch {
+      throw new BadRequestException('Failed to create user');
+    }
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const result = await this.userRepository.update(id, updateUserDto);
+    // Eğer şifre güncelleniyorsa, hash'le
+    const updateData = { ...updateUserDto };
+    if (updateData.password_hash) {
+      updateData.password_hash = await bcrypt.hash(
+        updateData.password_hash,
+        10,
+      );
+    }
+
+    const result = await this.userRepository.update(id, updateData);
     if (!result || result.length === 0) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
